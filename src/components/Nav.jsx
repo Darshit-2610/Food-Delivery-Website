@@ -4,9 +4,10 @@ import { LuShoppingBag } from "react-icons/lu";
 import { MdFastfood } from "react-icons/md";
 import { dataContext } from "../context/UserContext";
 import { food_items } from "../food";
+import { useSelector } from "react-redux";
 
 function Nav() {
-  let { input, setInput, setCate } = useContext(dataContext);
+  let { input, setInput, setCate  , showCart ,setShowCart} = useContext(dataContext);
   useEffect(() => {
     let newList = food_items.filter(
       (item) =>
@@ -15,6 +16,9 @@ function Nav() {
     );
     setCate(newList);
   }, [input]);
+  
+let items = useSelector(state => state.cart)
+
   return (
     <div className="w-full h-[100px] flex justify-between items-center px-5 md:px-8">
       <div className="w-[60px] h-[60px] bg-white flex justify-center items-center rounded-md shadow-xl">
@@ -33,9 +37,11 @@ function Nav() {
           value={input}
         />
       </form>
-      <div className="w-[60px] h-[60px] bg-white flex justify-center items-center rounded-md shadow-xl relative">
+      <div className="w-[60px] h-[60px] bg-white flex justify-center items-center rounded-md shadow-xl relative cursor-pointer" onClick={() => {
+        setShowCart(true)
+      }}>
         <span className="absolute top-0 right-2 text-green-500 font-bold text-[18px] ">
-          0
+          {items.length}
         </span>
         <LuShoppingBag className="w-[30px] h-[30px] text-green-500" />
       </div>
